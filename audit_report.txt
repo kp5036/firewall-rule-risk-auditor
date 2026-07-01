@@ -1,0 +1,71 @@
+Firewall Rule Risk Audit Report
+========================================
+
+Summary
+----------------------------------------
+Total Rules Scanned: 8
+High Risk Rules: 4
+Medium Risk Rules: 2
+Low Risk Rules: 1
+Safe Rules: 1
+Needs Review: 0
+
+Detailed Findings
+----------------------------------------
+
+Finding #1
+Rule: ALLOW TCP 22 FROM 0.0.0.0/0
+Service: SSH
+Risk: HIGH
+Reason: SSH is exposed to the public internet.
+Recommendation: Restrict access to trusted IP addresses or private network ranges.
+
+Finding #2
+Rule: ALLOW TCP 443 FROM 0.0.0.0/0
+Service: HTTPS
+Risk: LOW
+Reason: HTTPS is publicly exposed, which is common for web services.
+Recommendation: Confirm this service is intentionally public and protected with proper security controls.
+
+Finding #3
+Rule: ALLOW TCP 3306 FROM 0.0.0.0/0
+Service: MySQL
+Risk: HIGH
+Reason: MySQL is exposed to the public internet.
+Recommendation: Restrict access to trusted IP addresses or private network ranges.
+
+Finding #4
+Rule: ALLOW TCP 8080 FROM 192.168.1.0/24
+Service: HTTP Alternate
+Risk: MEDIUM
+Reason: HTTP Alternate is restricted to a non-public source range.
+Recommendation: Verify that the source range follows least-privilege access.
+
+Finding #5
+Rule: DENY TCP 23 FROM 0.0.0.0/0
+Service: Telnet
+Risk: SAFE
+Reason: This rule denies traffic, so it does not expose the service.
+Recommendation: No immediate action required.
+
+Finding #6
+Rule: ALLOW TCP 3389 FROM 0.0.0.0/0
+Service: Remote Desktop Protocol
+Risk: HIGH
+Reason: Remote Desktop Protocol is exposed to the public internet.
+Recommendation: Restrict access to trusted IP addresses or private network ranges.
+
+Finding #7
+Rule: ALLOW TCP 5432 FROM 10.0.0.0/16
+Service: PostgreSQL
+Risk: MEDIUM
+Reason: PostgreSQL is restricted to a non-public source range.
+Recommendation: Verify that the source range follows least-privilege access.
+
+Finding #8
+Rule: ALLOW TCP 6379 FROM 0.0.0.0/0
+Service: Redis
+Risk: HIGH
+Reason: Redis is exposed to the public internet.
+Recommendation: Restrict access to trusted IP addresses or private network ranges.
+
