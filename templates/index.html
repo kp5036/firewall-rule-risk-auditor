@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Firewall Rule Risk Auditor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Firewall Rule Risk Auditor</h1>
+            <p>
+                A student-Friendly built Python and Flask security tool for reviewing firewall-style rules,
+                identifying risky public exposure, and explaining remediation steps in plain English.
+            </p>
+            <span class="project-note">Built as a cybersecurity + software engineering portfolio project</span>
+        </header>
+
+        <section class="card">
+            <h2>Analyze Firewall Rules</h2>
+            <p class="helper-text">Paste rules using this format:</p>
+            <code>ACTION PROTOCOL PORT FROM SOURCE</code>
+
+            <form method="POST">
+                <textarea name="rules" rows="10">{{ user_input }}</textarea>
+                <button type="submit">Analyze Rules</button>
+            </form>
+        </section>
+
+        <section class="card guide">
+            <h2>Rule Format Guide</h2>
+
+            <h3>Required Format</h3>
+            <p><code>ALLOW TCP 22 FROM 0.0.0.0/0</code></p>
+
+            <ul>
+                <li><strong>ALLOW</strong> permits traffic.</li>
+                <li><strong>DENY</strong> blocks traffic.</li>
+                <li><strong>TCP</strong> is the network protocol.</li>
+                <li><strong>22</strong> is the port number.</li>
+                <li><strong>FROM</strong> is required in each rule.</li>
+                <li><strong>0.0.0.0/0</strong> means open to the public internet.</li>
+            </ul>
+
+            <h3>Common Ports</h3>
+            <div class="ports">
+                <span>22 SSH</span>
+                <span>23 Telnet</span>
+                <span>80 HTTP</span>
+                <span>443 HTTPS</span>
+                <span>3306 MySQL</span>
+                <span>5432 PostgreSQL</span>
+                <span>3389 RDP</span>
+                <span>6379 Redis</span>
+                <span>8080 Alt HTTP</span>
+            </div>
+        </section>
+
+        {% if results %}
+        <section class="card">
+            <h2>Summary</h2>
+            <div class="summary-grid">
+                <div>Total<br><strong>{{ summary.total }}</strong></div>
+                <div>High<br><strong>{{ summary.HIGH }}</strong></div>
+                <div>Medium<br><strong>{{ summary.MEDIUM }}</strong></div>
+                <div>Low<br><strong>{{ summary.LOW }}</strong></div>
+                <div>Safe<br><strong>{{ summary.SAFE }}</strong></div>
+                <div>Invalid<br><strong>{{ summary.INVALID }}</strong></div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Findings</h2>
+
+            {% for result in results %}
+            <div class="finding {{ result.risk | lower }}">
+                <div class="finding-header">
+                    <span class="risk">{{ result.risk }}</span>
+                    <span class="service">{{ result.service }}</span>
+                </div>
+
+                <p><strong>Rule:</strong> {{ result.rule_text }}</p>
+                <p><strong>Reason:</strong> {{ result.reason }}</p>
+                <p><strong>Recommendation:</strong> {{ result.recommendation }}</p>
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+    </div>
+</body>
+</html>
